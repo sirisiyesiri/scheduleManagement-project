@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -61,18 +62,19 @@ public class ScheduleService {
     public List<GetScheduleResponse> findAll() {
         List<Schedule> schedules = scheduleRepository.findAll();
 
-        List<GetScheduleResponse> dtos = new ArrayList<>();
-        for(Schedule schedule : schedules) {
-            dtos.add(new GetScheduleResponse(
-                    schedule.getId(),
-                    schedule.getTitle(),
-                    schedule.getContent(),
-                    schedule.getAuthorName(),
-                    schedule.getCreatedDate(),
-                    schedule.getModifiedDate()
-            ));
-        }
-        return dtos;
+        return schedules.stream()
+                .sorted(Comparator.comparing(Schedule::getModifiedDate).reversed())
+                // Comparator.comparing : 특정 필드 기준 정렬
+                // Schedule::getModifiedDate : Schedule -> Schedule.getModifiedDate
+                // reversed() : 내림차순
+                .map(schedule -> new GetScheduleResponse(
+                        schedule.getId(),
+                        schedule.getTitle(),
+                        schedule.getContent(),
+                        schedule.getAuthorName(),
+                        schedule.getCreatedDate(),
+                        schedule.getModifiedDate()
+                )). toList();
     }
 
     // 작성자명에 따른 일정 조회
@@ -80,17 +82,18 @@ public class ScheduleService {
     public List<GetScheduleResponse> findAllByAuthorName(String authorName) {
         List<Schedule> schedules = scheduleRepository.findAllByAuthorName(authorName);
 
-        List<GetScheduleResponse> dtos = new ArrayList<>();
-        for(Schedule schedule : schedules) {
-            dtos.add(new GetScheduleResponse(
-                    schedule.getId(),
-                    schedule.getTitle(),
-                    schedule.getContent(),
-                    schedule.getAuthorName(),
-                    schedule.getCreatedDate(),
-                    schedule.getModifiedDate()
-            ));
-        }
-        return dtos;
+        return schedules.stream()
+                .sorted(Comparator.comparing(Schedule::getModifiedDate).reversed())
+                // Comparator.comparing : 특정 필드 기준 정렬
+                // Schedule::getModifiedDate : Schedule -> Schedule.getModifiedDate
+                // reversed() : 내림차순
+                .map(schedule -> new GetScheduleResponse(
+                        schedule.getId(),
+                        schedule.getTitle(),
+                        schedule.getContent(),
+                        schedule.getAuthorName(),
+                        schedule.getCreatedDate(),
+                        schedule.getModifiedDate()
+                )). toList();
     }
 }
