@@ -56,7 +56,26 @@ public class ScheduleService {
         );
     }
 
-    // 작성자명에 따른 전체 일정 조회
+    // 전체 일정 조회
+    @Transactional(readOnly = true)
+    public List<GetScheduleResponse> findAll() {
+        List<Schedule> schedules = scheduleRepository.findAll();
+
+        List<GetScheduleResponse> dtos = new ArrayList<>();
+        for(Schedule schedule : schedules) {
+            dtos.add(new GetScheduleResponse(
+                    schedule.getId(),
+                    schedule.getTitle(),
+                    schedule.getContent(),
+                    schedule.getAuthorName(),
+                    schedule.getCreatedDate(),
+                    schedule.getModifiedDate()
+            ));
+        }
+        return dtos;
+    }
+
+    // 작성자명에 따른 일정 조회
     @Transactional(readOnly = true)
     public List<GetScheduleResponse> findAllByAuthorName(String authorName) {
         List<Schedule> schedules = scheduleRepository.findAllByAuthorName(authorName);

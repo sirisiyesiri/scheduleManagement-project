@@ -28,8 +28,13 @@ public class ScheduleController {
     }
 
     @GetMapping("/schedules")
-    public ResponseEntity<List<GetScheduleResponse>> findAllScheduleByAuthorName(@RequestParam String authorName
+    public ResponseEntity<List<GetScheduleResponse>> findAllScheduleByAuthorName(
+            @RequestParam(required = false) String authorName
     ) {
-        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findAllByAuthorName(authorName));
+        if(authorName == null || authorName.isBlank()) {
+            return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findAll());
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findAllByAuthorName(authorName));
+        }
     }
 }
