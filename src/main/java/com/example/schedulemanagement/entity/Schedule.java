@@ -17,6 +17,7 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 
 // JPA Auditing 기능을 활성화하여 생성일/수정일을 자동으로 관리하도록 설정
+// -> 해당 엔티티에서 Auditing을 사용한다는 선언
 @EntityListeners(AuditingEntityListener.class)
 public class Schedule {
 
