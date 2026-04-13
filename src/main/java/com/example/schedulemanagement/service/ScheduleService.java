@@ -121,4 +121,17 @@ public class ScheduleService {
             throw new PasswordNotMatchException();  // 비밀번호 일치하지 않을 경우, 예외 처리
         }
     }
+
+    @Transactional
+    public void delete(Long scheduleID, DeleteScheduleRequest request) {
+         Schedule schedule = scheduleRepository.findById(scheduleID).orElseThrow(
+                 () -> new IllegalStateException("없는 일정입니다.")
+         );
+
+         if(schedule.getPassword().equals(request.getPassword())) {
+             scheduleRepository.deleteById(scheduleID);
+         } else {
+             throw new PasswordNotMatchException();
+         }
+    }
 }
