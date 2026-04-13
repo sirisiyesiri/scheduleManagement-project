@@ -37,4 +37,6 @@ public class ScheduleController {
             return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findAllByAuthorName(authorName));
         }
     }
+
+
 }
