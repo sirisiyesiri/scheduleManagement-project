@@ -7,4 +7,5 @@ public class UpdateScheduleRequest {
 
     private String title;
     private String authorName;
+    private String password;
 }
