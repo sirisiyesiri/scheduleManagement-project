@@ -46,11 +46,13 @@ public class Schedule {
 //        this.modifiedDate = modifiedDate;
     }
 
-    public void updateTitle(String title) {
-        this.title = title;
-    }
-
-    public void updateAuthorName(String authorName) {
-        this.authorName = authorName;
+    // title과 authorName 세터를 각각 만들기 보다 한 번에 만들어서 그 안에서 조건 구분을 통해 값 세팅
+    public void updateInfo(String title, String authorName) {
+        if(title != null) {
+            this.title = title;
+        }
+        if(authorName != null) {
+            this.authorName = authorName;
+        }
     }
 }

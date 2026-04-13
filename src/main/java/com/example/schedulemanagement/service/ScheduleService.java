@@ -1,8 +1,7 @@
 package com.example.schedulemanagement.service;
 
-import com.example.schedulemanagement.dto.CreateScheduleRequest;
-import com.example.schedulemanagement.dto.CreateScheduleResponse;
-import com.example.schedulemanagement.dto.GetScheduleResponse;
+import com.example.schedulemanagement.PasswordNotMatchException;
+import com.example.schedulemanagement.dto.*;
 import com.example.schedulemanagement.entity.Schedule;
 import com.example.schedulemanagement.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -95,5 +94,31 @@ public class ScheduleService {
                         schedule.getCreatedDate(),
                         schedule.getModifiedDate()
                 )). toList();
+    }
+
+    // 일정 수정
+    @Transactional
+    public UpdateScheduleResponse update(Long scheduleID, UpdateScheduleRequest request) {
+        Schedule schedule = scheduleRepository.findById(scheduleID).orElseThrow(
+                () -> new IllegalStateException("없는 일정입니다.")
+        );
+
+        if(request.getPassword().equals(schedule.getPassword())) {
+            schedule.updateInfo(
+                    request.getTitle(),
+                    request.getAuthorName()
+            );
+
+            return new UpdateScheduleResponse(
+                    schedule.getId(),
+                    schedule.getTitle(),
+                    schedule.getContent(),
+                    schedule.getAuthorName(),
+                    schedule.getCreatedDate(),
+                    schedule.getModifiedDate()
+            );
+        } else {
+            throw new PasswordNotMatchException();  // 비밀번호 일치하지 않을 경우, 예외 처리
+        }
     }
 }
