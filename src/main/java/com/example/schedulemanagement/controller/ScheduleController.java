@@ -15,4 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
+
+    @PostMapping("schedules")
+    public ResponseEntity<CreateScheduleResponse> createSchedule(@RequestBody CreateScheduleRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(scheduleService.save(request));
+    }
 }
