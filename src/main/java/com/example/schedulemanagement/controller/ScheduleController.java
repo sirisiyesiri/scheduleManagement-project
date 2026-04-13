@@ -9,13 +9,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
 
-    @PostMapping("schedules")
+    @PostMapping("/schedules")
     public ResponseEntity<CreateScheduleResponse> createSchedule(@RequestBody CreateScheduleRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduleService.save(request));
     }
@@ -23,5 +25,11 @@ public class ScheduleController {
     @GetMapping("/schedules/{scheduleID}")
     public ResponseEntity<GetScheduleResponse> findOneSchedule(@PathVariable Long scheduleID) {
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findOne(scheduleID));
+    }
+
+    @GetMapping("/schedules")
+    public ResponseEntity<List<GetScheduleResponse>> findAllScheduleByAuthorName(@RequestParam String authorName
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findAllByAuthorName(authorName));
     }
 }

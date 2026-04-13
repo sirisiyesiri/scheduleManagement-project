@@ -9,12 +9,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
 
+    // 일정 생성
     @Transactional
     public CreateScheduleResponse save(CreateScheduleRequest request) {
         Schedule schedule = new Schedule(
@@ -35,6 +39,7 @@ public class ScheduleService {
         );
     }
 
+    // 단일 일정 조회
     @Transactional(readOnly = true)
     public GetScheduleResponse findOne(Long scheduleID) {
         Schedule schedule = scheduleRepository.findById(scheduleID).orElseThrow(
@@ -49,5 +54,24 @@ public class ScheduleService {
                 schedule.getCreatedDate(),
                 schedule.getModifiedDate()
         );
+    }
+
+    // 작성자명에 따른 전체 일정 조회
+    @Transactional(readOnly = true)
+    public List<GetScheduleResponse> findAllByAuthorName(String authorName) {
+        List<Schedule> schedules = scheduleRepository.findAllByAuthorName(authorName);
+
+        List<GetScheduleResponse> dtos = new ArrayList<>();
+        for(Schedule schedule : schedules) {
+            dtos.add(new GetScheduleResponse(
+                    schedule.getId(),
+                    schedule.getTitle(),
+                    schedule.getContent(),
+                    schedule.getAuthorName(),
+                    schedule.getCreatedDate(),
+                    schedule.getModifiedDate()
+            ));
+        }
+        return dtos;
     }
 }
