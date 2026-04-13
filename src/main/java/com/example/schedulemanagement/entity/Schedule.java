@@ -46,10 +46,11 @@ public class Schedule {
 //        this.modifiedDate = modifiedDate;
     }
 
-    public void updateInfo(String title, String content, String authorName, String password) {
+    public void updateTitle(String title) {
         this.title = title;
-        this.content = content;
+    }
+
+    public void updateAuthorName(String authorName) {
         this.authorName = authorName;
-        this.password = password;
     }
 }
